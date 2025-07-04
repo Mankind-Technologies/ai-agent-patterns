@@ -1,0 +1,21 @@
+{
+  "name": "tap-action-pattern",
+  "version": "1.0.0",
+  "description": "Tap Action Pattern Example - Research Assistant",
+  "main": "index.ts",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openai/agents": "^0.0.10",
+    "openai": "^5.8.2",
+    "zod": "^3.25.71"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
