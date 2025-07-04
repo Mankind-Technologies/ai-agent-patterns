@@ -1,20 +1,18 @@
-# Embedded Explaining Pattern - OpenAI Agent SDK (TypeScript)
+# Embedded Explaining Pattern - OpenAI Agent SDK TypeScript
 
-This implementation demonstrates the Embedded Explaining pattern using a real OpenAI Agent with the OpenAI Agent SDK for TypeScript.
+This example demonstrates the **Embedded Explaining Pattern** using the OpenAI Agent SDK for TypeScript. The pattern requires agents to provide clear explanations for their tool usage decisions, improving transparency and decision quality.
 
 ## Overview
 
-The Embedded Explaining pattern adds explanation requirements to tools, forcing agents to justify their reasoning for each tool call. This increases observability and improves decision quality by making agents more deliberate about their actions.
+The Embedded Explaining Pattern transforms opaque tool calls into transparent, explainable decisions by requiring agents to provide a "why" parameter for each tool use. This increases observability, improves debugging, and encourages more thoughtful agent behavior.
 
-## Features
+## Key Features
 
-- **Real OpenAI Agent**: Complete agent implementation with explanation requirements
-- **Tool Wrapper**: `withExplanation()` function that adds explanation requirements to any tool
-- **Comparison Mode**: Compare agents with and without explanation requirements
-- **Interactive Mode**: Chat with the agent to see explanations in real-time
-- **Explanation Analytics**: Track and analyze explanation patterns
-- **Configurable**: Adjust explanation requirements and behavior
-- **Observable**: Complete audit trail of agent decision-making
+- **Explanation Requirements**: Tools require clear justification for each use
+- **Transparency**: See exactly why agents chose specific tools
+- **Debugging**: Easily understand agent decision-making process
+- **Quality Improvement**: Forces agents to be more deliberate about tool selection
+- **Customizable**: Configure explanation requirements per tool
 
 ## Installation
 
@@ -24,223 +22,237 @@ npm install
 
 ## Configuration
 
-Create a `.env` file with your OpenAI API key:
+Set your OpenAI API key:
 
-```env
-OPENAI_API_KEY=your_api_key_here
+```bash
+export OPENAI_API_KEY="your-api-key-here"
 ```
-
-**Important**: You must set your OpenAI API key to run the actual agent. The demo will show the pattern structure and initialization without an API key, but needs the key to execute queries against the OpenAI API.
 
 ## Usage
 
-### Running the Demo
-
-The demo includes several modes to explore the embedded explaining pattern:
-
-#### Comparison Mode (Default)
-```bash
-npm start
-# or
-npm start comparison
-```
-Runs the same queries with both explained and regular agents to show the difference.
-
-#### Explanation-Only Mode
-```bash
-npm start explained
-```
-Runs only the agent with explanation requirements.
-
-#### Regular Mode
-```bash
-npm start regular
-```
-Runs only the agent without explanation requirements.
-
-#### Interactive Mode
-```bash
-npm start interactive
-```
-Interactive chat session where you can ask questions and see explanations in real-time.
-
-### Agent Implementation
-
-The demo includes a research assistant agent with two tools:
-- **Web Scraping** (expensive): Requires explanations for each use
-- **Local Search** (free): Optional explanations
+### Basic Example
 
 ```typescript
-import { Agent, run } from "@openai/agents";
 import { withExplanation } from "./src/explaining";
+import { baseWebScrapeTool } from "./src/tools";
 
-// Create tools with explanation requirements
-const explainedWebScrapeTool = withExplanation(baseWebScrapeTool, {
-    requireExplanation: true,
-    explanationPrompt: "Explain why web scraping is necessary",
-    includeReasoningInOutput: true
+// Add explanation requirement to tool
+const explainedTool = withExplanation(baseWebScrapeTool, {
+  requireExplanation: true,
+  explanationPrompt: "Explain why web scraping is necessary and what specific information you're seeking"
+});
+
+// Tool now requires explanation
+const result = await explainedTool.execute({
+  url: "https://example.com",
+  topic: "AI news",
+  why: "User asked for latest AI developments and local knowledge may be outdated"
+});
+```
+
+### Agent with Explained Tools
+
+```typescript
+import { Agent, tool, run } from "@openai/agents";
+import { withExplanation } from "./src/explaining";
+import { baseWebScrapeTool, baseLocalSearchTool } from "./src/tools";
+
+// Create explained tools
+const explainedWebTool = withExplanation(baseWebScrapeTool, {
+  requireExplanation: true
+});
+
+const explainedLocalTool = withExplanation(baseLocalSearchTool, {
+  requireExplanation: false
 });
 
 // Create agent
 const agent = new Agent({
-    name: "ExplainedResearchAssistant",
-    model: "gpt-4o-mini",
-    instructions: AGENT_INSTRUCTIONS,
-    tools: [explainedWebScrapeTool, explainedLocalSearchTool],
+  name: "ExplainingResearchAssistant",
+  model: "gpt-4o-mini",
+  instructions: `You are a research assistant. For every tool call, you must:
+    
+    1. Explain WHY you're using that specific tool
+    2. What information you expect to find
+    3. Why this tool is better than alternatives for this task
+    4. How this fits your overall research strategy
+    
+    Be specific and thoughtful in your explanations.`,
+  tools: [tool(explainedWebTool), tool(explainedLocalTool)]
 });
 
 // Run queries
-const result = await run(agent, "What are the latest React features?");
+const response = await run(agent, "What are the latest JavaScript features?");
+console.log(response.finalOutput);
 ```
 
-## File Structure
+## Running the Example
 
-```
-src/
-├── explaining.ts      # Core explanation wrapper functionality
-├── config.ts         # Configuration management
-├── knowledge-base.ts # Mock knowledge base for local search
-└── index.ts         # Main agent implementation and demo
+Run the complete demonstration:
+
+```bash
+npm start
 ```
 
-## Key Components
-
-### `withExplanation(tool, options)`
-
-The core function that wraps any tool to add explanation requirements:
-
-```typescript
-const explainedTool = withExplanation(originalTool, {
-    requireExplanation: true,        // Make explanations mandatory
-    explanationPrompt: "Explain why this action is justified",
-    includeReasoningInOutput: true   // Include reasoning in tool output
-});
-```
-
-### Agent Instructions
-
-The agent is instructed to:
-- Provide clear explanations for expensive tool usage
-- Be strategic about tool selection
-- Consider cost vs. value when using tools
-- Explain decision-making process
-
-### Configuration Options
-
-- `requireExplanation`: Whether explanations are mandatory
-- `explanationPrompt`: Custom prompt for explanation
-- `includeReasoningInOutput`: Include reasoning analysis in output
-
-## Example Output
-
-```
-🔍 Query 1: Tell me about JavaScript basics and frameworks
---------------------------------------------------
-[explaining] Tool webScrape called with explanation: "Need current JavaScript framework information since local knowledge may be outdated"
-[webScrape] Processing request for: JavaScript frameworks from https://developer.mozilla.org
-
-📋 Response:
-Based on my search, here's what I found about JavaScript basics and frameworks:
-
-[Current information from web scraping about JavaScript frameworks...]
-
-[EXPLANATION] Need current JavaScript framework information since local knowledge may be outdated
---------------------------------------------------
-
-📊 EXPLANATION SUMMARY:
-- Total explained tool calls: 3
-- Tools with explanations: webScrape, localSearch
-- Tool usage breakdown: webScrape: 2, localSearch: 1
-- Latest explanation: "Need current React 18 features that aren't in local knowledge base"
-```
-
-## Benefits Demonstrated
-
-### With Explanation Requirements:
-✅ **Transparent decision-making process**
-✅ **Justified tool usage with clear reasoning**
-✅ **More strategic thinking about expensive operations**
-✅ **Better audit trail of agent decisions**
-✅ **Encourages cost-conscious behavior**
-
-### Without Explanation Requirements:
-⚠️ **Less transparent decision-making**
-⚠️ **No insight into tool selection reasoning**
-⚠️ **May use expensive tools without justification**
-⚠️ **Harder to debug or optimize behavior**
+This will show:
+1. Basic explaining pattern usage
+2. Custom explanation requirements
+3. Error handling for missing explanations
 
 ## Pattern Benefits
 
-1. **🔍 Transparency**: Clear reasoning for each tool use
-2. **📊 Quality**: Forces deliberate decision-making
-3. **🐛 Debugging**: Easy to understand agent behavior
-4. **💰 Cost Control**: Encourages strategic tool usage
-5. **🎛️ Flexibility**: Can be applied to any tool selectively
+### 1. **Transparency**
+See exactly why agents chose specific tools:
 
-## Integration with Other Patterns
-
-This pattern can be combined with others:
-- **Tool Budget + Explanation**: "Why is this expensive tool worth using?"
-- **Retry Logic + Explanation**: "Why retry with this strategy?"
-- **Caching + Explanation**: "Why use cached vs fresh data?"
-
-## Real-World Applications
-
-- **Healthcare**: Explain diagnostic tool usage
-- **Finance**: Justify trading decisions and data sources
-- **Legal**: Document research reasoning and case law selection
-- **Customer Service**: Explain resolution approaches and tool choices
-- **Data Analysis**: Justify data source choices and analysis methods
-- **Content Creation**: Explain research decisions and source selection
-
-## Development
-
-### Build
-```bash
-npm run build
+```
+[explaining] Tool webScrape called with explanation: "User asked for latest JavaScript features and local knowledge may be outdated"
 ```
 
-### Development Mode
-```bash
-npm run dev
+### 2. **Better Debugging**
+When agents make unexpected choices, the explanation reveals the reasoning:
+
+```
+Problem: Agent used expensive web scraping for basic question
+Explanation: "User asked about 'current' JavaScript - interpreting as latest features"
+Solution: Clarify prompt to distinguish 'current' vs 'latest'
 ```
 
-### Testing
-```bash
-npm test
+### 3. **Quality Improvement**
+Requiring explanations forces more deliberate decisions:
+
+```
+Without explanation: Random tool selection
+With explanation: "Using local search first because this is foundational information"
+```
+
+### 4. **Cost Control**
+Agents justify expensive operations:
+
+```
+Explanation: "User needs latest market data for time-sensitive decision - justifying web scraping cost"
+```
+
+## Configuration Options
+
+### Custom Explanation Prompts
+
+```typescript
+const customTool = withExplanation(tool, {
+  explanationPrompt: "Explain what specific information you need and why this tool is best"
+});
+```
+
+### Optional Explanations
+
+```typescript
+const optionalTool = withExplanation(tool, {
+  requireExplanation: false
+});
 ```
 
 ## Advanced Usage
 
-### Custom Explanation Requirements
+### Tool-Specific Requirements
 
 ```typescript
-// Different explanation requirements for different tools
-const criticalTool = withExplanation(baseTool, {
-    requireExplanation: true,
-    explanationPrompt: "Provide detailed justification for this critical operation",
-    includeReasoningInOutput: true
+// Strict requirements for expensive tools
+const expensiveTool = withExplanation(webScrapeTool, {
+  requireExplanation: true,
+  explanationPrompt: "Justify this expensive operation and what specific information you need"
 });
 
-const utilityTool = withExplanation(baseTool, {
-    requireExplanation: false,  // Optional explanations
-    explanationPrompt: "Briefly explain your reasoning",
-    includeReasoningInOutput: false
+// Relaxed requirements for free tools
+const freeTool = withExplanation(localSearchTool, {
+  requireExplanation: false,
+  explanationPrompt: "Brief explanation of search strategy"
 });
 ```
 
-### Explanation Analytics
+### Integration with Other Patterns
 
 ```typescript
-import { generateExplanationSummary, clearExplanationHistory } from "./src/explaining";
+// Combine with budget pattern
+const budgetedExplainedTool = withExplanation(
+  budget(expensiveTool, { maxTimes: 3 })
+);
 
-// Get explanation summary
-console.log(generateExplanationSummary());
-
-// Clear explanation history
-clearExplanationHistory();
+// Agent must explain why expensive tool is worth budget
+await budgetedExplainedTool.execute({
+  url: "https://premium-source.com",
+  topic: "urgent research",
+  why: "Critical deadline requires most current data - justifying premium source"
+});
 ```
+
+## Real-World Example Output
+
+```
+Query 1: "What are the latest JavaScript features?"
+----------------------------------------
+[explaining] Tool webScrape called with explanation: "User asked for 'latest' JavaScript features. Local knowledge may not include most recent updates, so web scraping developer.mozilla.org will provide current information."
+
+Response: Based on the latest information from Mozilla Developer Network, JavaScript has several exciting new features...
+```
+
+## Testing
+
+Run tests to verify explanation requirements:
+
+```bash
+npm test
+```
+
+## Common Use Cases
+
+1. **Research Assistants**: Justify information source selection
+2. **Customer Support**: Explain resolution approach choices
+3. **Data Analysis**: Clarify analysis methodology
+4. **Decision Support**: Document reasoning for compliance
+
+## Troubleshooting
+
+### Missing Explanations
+
+```typescript
+// This will fail
+const result = await explainedTool.execute({
+  query: "test"
+  // Missing 'why' parameter
+});
+// Returns: { error: "EXPLANATION_REQUIRED", message: "..." }
+```
+
+### Too Generic Explanations
+
+Use specific prompts to guide better explanations:
+
+```typescript
+const improvedTool = withExplanation(tool, {
+  explanationPrompt: "Be specific about what information you need and why this tool is the best choice"
+});
+```
+
+## Next Steps
+
+1. **Implement Pattern**: Add explanations to your most critical tools
+2. **Monitor Quality**: Track how explanations help with debugging
+3. **Refine Prompts**: Iterate on explanation requirements based on usage
+4. **Scale Up**: Apply to more tools as you see value
+
+## Related Patterns
+
+- **Tool Budget Pattern**: Combine explanations with cost justification
+- **Fallback Pattern**: Explain why fallback tools are chosen
+- **Audit Pattern**: Use explanations for compliance documentation
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass
+5. Submit a pull request
 
 ## License
 
-MIT 
+MIT License - see LICENSE file for details 

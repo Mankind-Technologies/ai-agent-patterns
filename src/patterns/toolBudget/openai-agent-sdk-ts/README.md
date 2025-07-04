@@ -23,7 +23,6 @@ Without budget constraints, agents tend to:
 With budget constraints, agents learn to:
 - **Try free alternatives first** (local search, cached data)
 - **Save expensive resources** for high-value tasks
-- **Explain their reasoning** about tool selection
 - **Gracefully degrade** when resources are depleted
 
 ### Core Mechanism
@@ -229,8 +228,7 @@ The example demonstrates:
 2. **Budget Awareness**: Clear tracking of expensive tool usage
 3. **Intelligent Prioritization**: Web scraping saved for latest info needs
 4. **Graceful Fallback**: When budget exhausted, agent uses alternatives
-5. **Transparent Reasoning**: Agent explains its tool choice decisions
-6. **🆕 Quantified Value**: Exact measurements of cost savings and efficiency gains
+5. **🆕 Quantified Value**: Exact measurements of cost savings and efficiency gains
 
 ## Why Comparison Mode is Valuable
 

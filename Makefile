@@ -1,7 +1,8 @@
-# AI Agent Patterns - Makefile for Docusaurus Site Management
+# AI Agent Patterns - Makefile for Docusaurus Site Management and Pattern Compilation
 
 # Variables
 SITE_DIR = src/site
+PATTERNS_DIR = src/patterns
 RED = \033[0;31m
 GREEN = \033[0;32m
 YELLOW = \033[1;33m
@@ -13,6 +14,7 @@ NC = \033[0m
 
 # Phony targets (don't correspond to files)
 .PHONY: help site-install site-start site-dev site-build site-serve site-clean site-check site-update site-audit
+.PHONY: patterns-install patterns-build patterns-check patterns-clean patterns-test check-all
 
 # Help target
 help:
@@ -25,6 +27,14 @@ help:
 	@printf "  site-serve       Serve production build locally\n"
 	@printf "  site-clean       Clean build artifacts\n"
 	@printf "\n"
+	@printf "$(GREEN)Pattern Development:$(NC)\n"
+	@printf "  patterns-install Install dependencies for all patterns\n"
+	@printf "  patterns-build   Build all pattern projects\n"
+	@printf "  patterns-check   Type-check all pattern projects\n"
+	@printf "  patterns-clean   Clean pattern build artifacts\n"
+	@printf "  patterns-test    Test all pattern projects\n"
+	@printf "  check-all        Run all checks (site + patterns)\n"
+	@printf "\n"
 	@printf "$(GREEN)Development:$(NC)\n"
 	@printf "  site-dev         Start development server (alias for site-start)\n"
 	@printf "  site-check       Check for broken links and issues\n"
@@ -36,6 +46,8 @@ help:
 	@printf "$(YELLOW)Usage:$(NC)\n"
 	@printf "  make <command>\n"
 	@printf "  Example: make site-start\n"
+	@printf "  Example: make patterns-build\n"
+	@printf "  Example: make check-all\n"
 	@printf "\n"
 
 # Check if site directory exists
@@ -87,6 +99,111 @@ site-audit: check-directory
 	@printf "$(BLUE)Running security audit...$(NC)\n"
 	@cd $(SITE_DIR) && npm audit
 	@printf "$(GREEN)Security audit completed!$(NC)\n"
+
+# Pattern management targets
+patterns-install:
+	@printf "$(BLUE)Installing dependencies for all patterns...$(NC)\n"
+	@for pattern_dir in $(PATTERNS_DIR)/*/; do \
+		if [ -d "$$pattern_dir" ]; then \
+			for project_dir in $$pattern_dir*/; do \
+				if [ -f "$$project_dir/package.json" ]; then \
+					printf "$(YELLOW)Installing dependencies for $$(basename $$project_dir)...$(NC)\n"; \
+					cd "$$project_dir" && npm install && cd - > /dev/null; \
+				fi; \
+			done; \
+		fi; \
+	done
+	@printf "$(GREEN)All pattern dependencies installed!$(NC)\n"
+
+patterns-build:
+	@printf "$(BLUE)Building all pattern projects...$(NC)\n"
+	@failed=0; \
+	for pattern_dir in $(PATTERNS_DIR)/*/; do \
+		if [ -d "$$pattern_dir" ]; then \
+			for project_dir in $$pattern_dir*/; do \
+				if [ -f "$$project_dir/package.json" ]; then \
+					printf "$(YELLOW)Building $$(basename $$project_dir)...$(NC)\n"; \
+					cd "$$project_dir" && { \
+						if grep -q '"build"' package.json; then \
+							npm run build || failed=1; \
+						else \
+							npx tsc --noEmit || failed=1; \
+						fi; \
+					} && cd - > /dev/null; \
+				fi; \
+			done; \
+		fi; \
+	done; \
+	if [ $$failed -eq 0 ]; then \
+		printf "$(GREEN)All patterns built successfully!$(NC)\n"; \
+	else \
+		printf "$(RED)Some patterns failed to build!$(NC)\n"; \
+		exit 1; \
+	fi
+
+patterns-check:
+	@printf "$(BLUE)Type-checking all pattern projects...$(NC)\n"
+	@failed=0; \
+	for pattern_dir in $(PATTERNS_DIR)/*/; do \
+		if [ -d "$$pattern_dir" ]; then \
+			for project_dir in $$pattern_dir*/; do \
+				if [ -f "$$project_dir/package.json" ] && [ -f "$$project_dir/tsconfig.json" ]; then \
+					printf "$(YELLOW)Type-checking $$(basename $$project_dir)...$(NC)\n"; \
+					cd "$$project_dir" && npx tsc --noEmit || failed=1; \
+					cd - > /dev/null; \
+				fi; \
+			done; \
+		fi; \
+	done; \
+	if [ $$failed -eq 0 ]; then \
+		printf "$(GREEN)All patterns type-checked successfully!$(NC)\n"; \
+	else \
+		printf "$(RED)Some patterns failed type-checking!$(NC)\n"; \
+		exit 1; \
+	fi
+
+patterns-clean:
+	@printf "$(BLUE)Cleaning pattern build artifacts...$(NC)\n"
+	@for pattern_dir in $(PATTERNS_DIR)/*/; do \
+		if [ -d "$$pattern_dir" ]; then \
+			for project_dir in $$pattern_dir*/; do \
+				if [ -d "$$project_dir" ]; then \
+					printf "$(YELLOW)Cleaning $$(basename $$project_dir)...$(NC)\n"; \
+					cd "$$project_dir" && rm -rf dist build node_modules/.cache && cd - > /dev/null; \
+				fi; \
+			done; \
+		fi; \
+	done
+	@printf "$(GREEN)Pattern build artifacts cleaned!$(NC)\n"
+
+patterns-test:
+	@printf "$(BLUE)Running tests for all pattern projects...$(NC)\n"
+	@failed=0; \
+	for pattern_dir in $(PATTERNS_DIR)/*/; do \
+		if [ -d "$$pattern_dir" ]; then \
+			for project_dir in $$pattern_dir*/; do \
+				if [ -f "$$project_dir/package.json" ]; then \
+					printf "$(YELLOW)Testing $$(basename $$project_dir)...$(NC)\n"; \
+					cd "$$project_dir" && { \
+						if grep -q '"test"' package.json && ! grep -q '"Error: no test specified"' package.json; then \
+							npm test || failed=1; \
+						else \
+							printf "$(YELLOW)No tests configured for $$(basename $$project_dir), skipping...$(NC)\n"; \
+						fi; \
+					} && cd - > /dev/null; \
+				fi; \
+			done; \
+		fi; \
+	done; \
+	if [ $$failed -eq 0 ]; then \
+		printf "$(GREEN)All pattern tests passed!$(NC)\n"; \
+	else \
+		printf "$(RED)Some pattern tests failed!$(NC)\n"; \
+		exit 1; \
+	fi
+
+check-all: site-check patterns-check
+	@printf "$(GREEN)All checks completed successfully!$(NC)\n"
 
 # Quick aliases
 install: site-install

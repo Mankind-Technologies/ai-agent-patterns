@@ -24,8 +24,8 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--outline button--secondary button--lg"
-            to="/docs/patterns/tool-budget">
-            View Tool Budget Pattern
+            to="/docs/patterns/overview">
+            View All Patterns
           </Link>
         </div>
       </div>
@@ -73,18 +73,20 @@ export default function Home() {
               </div>
               <div className="col col--6">
                 <div className="pattern-card">
-                  <h3>More Patterns Coming Soon</h3>
+                  <h3>Embedded Explaining Pattern</h3>
                   <div className="badges">
-                    <span className="badge badge--pattern">In Development</span>
+                    <span className="badge badge--agent">Observability</span>
+                    <span className="badge badge--pattern">Decision Quality</span>
+                    <span className="badge badge--tool">Transparency</span>
                   </div>
                   <p>
-                    We're continuously adding new patterns based on real-world AI agent implementations.
-                    Stay tuned for more proven solutions.
+                    Require agents to explain their tool choices and reasoning. Increases transparency,
+                    improves decision quality, and makes debugging easier.
                   </p>
                   <Link
-                    className="button button--outline button--primary"
-                    to="/docs/patterns/overview">
-                    View All Patterns
+                    className="button button--primary"
+                    to="/docs/patterns/embedded-explaining">
+                    Learn More
                   </Link>
                 </div>
               </div>

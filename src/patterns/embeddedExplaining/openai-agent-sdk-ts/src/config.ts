@@ -73,7 +73,6 @@ export class ConfigManager {
         return {
             requireExplanation: this.config.requireExplanations,
             explanationPrompt: this.generateExplanationPrompt(),
-            includeReasoningInOutput: false
         };
     }
     

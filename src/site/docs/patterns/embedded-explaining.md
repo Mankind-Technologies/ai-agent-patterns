@@ -43,14 +43,6 @@ interface ExplainedToolInput<T> {
   why: string;
 }
 
-interface ExplainedToolOutput<T> {
-  // Original tool output
-  ...T;
-  // Added explanation tracking
-  explanation: string;
-  reasoning: string;
-}
-
 function withExplanation<T extends Tool>(tool: T): ExplainedTool<T> {
   // Implementation wraps tool with explanation requirements
 }
@@ -100,9 +92,7 @@ console.log(result);
 // {
 //   content: "Latest AI developments...",
 //   success: true,
-//   source: "https://example.com/ai-news",
-//   explanation: "Need current AI news since local knowledge may be outdated...",
-//   reasoning: "Agent justified web scraping for time-sensitive information"
+//   source: "https://example.com/ai-news"
 // }
 ```
 
@@ -123,9 +113,7 @@ const explainedLocalSearch = withExplanation({
     const results = await searchLocalKnowledge(input.query);
     return {
       results,
-      source: "local-database",
-      explanation: input.why,
-      reasoning: "Agent chose local search as primary information source"
+      source: "local-database"
     };
   }
 });
@@ -139,9 +127,7 @@ const explainedWebScraper = withExplanation({
     return {
       content,
       source: input.url,
-      processingTime: 2.1,
-      explanation: input.why,
-      reasoning: "Agent justified expensive web scraping operation"
+      processingTime: 2.1
     };
   }
 });
@@ -183,51 +169,64 @@ const response = await agent.run(
 // })
 ```
 
-## Pattern Variations
+## Pattern Implementation
 
-### Explanation Levels
+### Simple Implementation
 
 ```typescript
-enum ExplanationLevel {
-  Basic = "basic",      // Simple one-sentence explanation
-  Detailed = "detailed", // Multi-sentence reasoning
-  Strategic = "strategic" // Full strategic context
+import { z } from "zod";
+
+export interface ExplainingOptions {
+    requireExplanation?: boolean;
+    explanationPrompt?: string;
 }
 
-const explainedTool = withExplanation(originalTool, {
-  level: ExplanationLevel.Detailed,
-  minimumWords: 10,
-  requiresContext: true
-});
-```
-
-### Explanation Validation
-
-```typescript
-const validatedExplanationTool = withExplanation(originalTool, {
-  validateExplanation: (explanation: string) => {
-    if (explanation.length < 20) {
-      throw new Error("Explanation too brief - provide more detail");
-    }
-    if (!explanation.includes("because")) {
-      throw new Error("Explanation must include reasoning with 'because'");
-    }
-    return true;
-  }
-});
-```
-
-### Explanation Templates
-
-```typescript
-const templatedTool = withExplanation(originalTool, {
-  explanationTemplate: {
-    goal: "What I'm trying to achieve",
-    justification: "Why this tool is the best choice", 
-    alternatives: "Why I'm not using other options",
-    expected: "What I expect to find"
-  }
-});
+export function withExplanation(tool: any, options: ExplainingOptions = {}) {
+    const {
+        requireExplanation = true,
+        explanationPrompt = "Explain why this action is justified and what goal it serves"
+    } = options;
+    
+    const originalExecute = tool.execute;
+    
+    const execute = async (input: any, context: unknown) => {
+        console.log(`[explaining] Tool ${tool.name} called with explanation: "${input.why}"`);
+        
+        if (requireExplanation && (!input.why || input.why.trim().length === 0)) {
+            console.log(`[explaining] Tool ${tool.name} called without required explanation`);
+            return {
+                error: "EXPLANATION_REQUIRED",
+                message: "This tool requires an explanation of why it's being used. Please provide a 'why' parameter."
+            };
+        }
+        
+        console.log(`[explaining] Invoking tool ${tool.name}`);
+        
+        // Execute the original tool with the original parameters (excluding 'why')
+        const { why, ...originalInput } = input;
+        const result = await originalExecute(originalInput, context);
+        
+        console.log(`[explaining] Tool ${tool.name} completed.`);
+        
+        return result;
+    };
+    
+    // Add the why parameter to the tool
+    const newParameters = tool.parameters.extend({
+        why: z.string().describe(explanationPrompt)
+    });
+    
+    // Create a new tool object with enhanced description
+    const explainedTool = {
+        ...tool,
+        parameters: newParameters,
+        execute,
+        description: `${tool.description} \n\n[EXPLANATION REQUIRED] You must provide a clear explanation of why this action is justified and what goal it serves. Include a 'why' parameter with your reasoning.`
+    };
+    
+    console.log(`[explaining] Tool ${tool.name} enhanced with explanation requirements`);
+    return explainedTool;
+}
 ```
 
 ## Key Benefits
@@ -242,8 +241,7 @@ const failedCall = await explainedTool.execute({
 
 if (!failedCall.success) {
   console.log("Tool failed after reasoning:", failedCall.explanation);
-  // "User asked for comprehensive information" 
-  // → Shows agent misunderstood that local search would be sufficient
+  // Shows agent misunderstood that local search would be sufficient
 }
 ```
 
@@ -257,18 +255,7 @@ const betterDecision = await explainedTool.execute({
 // Agent chooses more appropriately when required to justify
 ```
 
-### 3. **Audit Trail**
-```typescript
-// Complete decision history for compliance
-const auditLog = explanationHistory.map(call => ({
-  timestamp: call.timestamp,
-  tool: call.toolName,
-  decision: call.explanation,
-  outcome: call.success
-}));
-```
-
-### 4. **User Trust**
+### 3. **User Trust**
 ```typescript
 // Users can see and understand agent reasoning
 function displayAgentReasoning(result: any) {
@@ -281,53 +268,34 @@ function displayAgentReasoning(result: any) {
 
 ## Advanced Configuration
 
-### Explanation Aggregation
+### Custom Explanation Prompts
 
 ```typescript
-class ExplanationMonitor {
-  private explanations: ExplanationEntry[] = [];
-  
-  trackExplanation(toolName: string, explanation: string, outcome: any) {
-    this.explanations.push({
-      toolName,
-      explanation,
-      outcome,
-      timestamp: new Date(),
-      quality: this.assessExplanationQuality(explanation)
-    });
-  }
-  
-  getDecisionSummary(): string {
-    return this.explanations
-      .map(e => `${e.toolName}: ${e.explanation}`)
-      .join('\n');
-  }
-  
-  assessExplanationQuality(explanation: string): number {
-    // Score explanation quality based on length, keywords, specificity
-    let score = 0;
-    score += explanation.length > 50 ? 20 : 10;
-    score += explanation.includes('because') ? 20 : 0;
-    score += explanation.includes('need') || explanation.includes('want') ? 15 : 0;
-    // ... more criteria
-    return Math.min(score, 100);
-  }
-}
+const detailedExplainer = withExplanation(tool, {
+  explanationPrompt: "Provide detailed justification including alternative approaches considered"
+});
+
+const simpleExplainer = withExplanation(tool, {
+  explanationPrompt: "Brief reason for this choice"
+});
 ```
 
-### Context-Aware Explanations
+### Optional Explanations
 
 ```typescript
-const contextualTool = withExplanation(originalTool, {
-  contextProvider: (input: any) => ({
-    previousCalls: getRecentToolCalls(),
-    userGoal: getCurrentUserGoal(),
-    systemState: getSystemState()
-  }),
-  
-  explanationEnhancer: (explanation: string, context: any) => {
-    return `${explanation} (Context: ${context.previousCalls.length} previous calls, goal: ${context.userGoal})`;
-  }
+const optionalExplanationTool = withExplanation(tool, {
+  requireExplanation: false
+});
+
+// Tool can be called with or without explanation
+await optionalExplanationTool.execute({
+  query: "test",
+  why: "Testing functionality"
+});
+
+await optionalExplanationTool.execute({
+  query: "test"
+  // No explanation required
 });
 ```
 
@@ -337,24 +305,29 @@ const contextualTool = withExplanation(originalTool, {
 
 ```typescript
 const budgetedExplainedTool = withExplanation(
-  budget(expensiveTool, { maxTimes: 3 }), 
-  {
-    requireBudgetJustification: true,
-    budgetAwareTemplate: "Given limited uses ({{remaining}} left), I'm using this tool because: {{explanation}}"
-  }
+  budget(expensiveTool, { maxTimes: 3 })
 );
+
+// Agent must explain why expensive tool is worth using
+await budgetedExplainedTool.execute({
+  url: "https://premium-data.com",
+  topic: "urgent research",
+  why: "Critical deadline requires most current data available, justifying expensive premium source"
+});
 ```
 
 ### With Retry Pattern
 
 ```typescript
 const explainedRetryTool = withExplanation(
-  withRetry(unreliableTool, { maxRetries: 3 }),
-  {
-    retryExplanations: true,
-    explanationOnRetry: "Retrying because: previous attempt failed and {{explanation}}"
-  }
+  withRetry(unreliableTool, { maxRetries: 3 })
 );
+
+// Explanations help understand why retries are happening
+await explainedRetryTool.execute({
+  data: "important",
+  why: "User needs this data for critical decision - worth retrying if it fails"
+});
 ```
 
 ## Best Practices
@@ -362,7 +335,7 @@ const explainedRetryTool = withExplanation(
 ### 1. **Clear Explanation Requirements**
 ```typescript
 const wellDefinedTool = withExplanation(tool, {
-  explanationGuidance: `
+  explanationPrompt: `
     Explain:
     - What specific information you need
     - Why this tool is the best choice
@@ -372,67 +345,51 @@ const wellDefinedTool = withExplanation(tool, {
 });
 ```
 
-### 2. **Explanation Quality Control**
+### 2. **Contextual Prompting**
 ```typescript
-const qualityControlledTool = withExplanation(tool, {
-  minimumQualityScore: 70,
-  requireKeywords: ['because', 'need', 'goal'],
-  prohibitedPhrases: ['just because', 'seems good'],
-  
-  qualityFeedback: (score: number) => {
-    if (score < 50) return "Explanation too vague - be more specific";
-    if (score < 70) return "Good explanation but could be more detailed";
-    return "Excellent explanation";
-  }
+const contextualTool = withExplanation(tool, {
+  explanationPrompt: "Given the current conversation context, explain why this tool call is necessary and what specific outcome you're seeking"
 });
 ```
 
-### 3. **Progressive Explanation Depth**
+### 3. **Integration with System Prompts**
 ```typescript
-const adaptiveTool = withExplanation(tool, {
-  adaptiveDepth: true,
-  
-  getRequiredDepth: (context: any) => {
-    // Require more explanation for expensive operations
-    if (context.toolCost > 1.0) return ExplanationLevel.Strategic;
-    if (context.isRetry) return ExplanationLevel.Detailed;
-    return ExplanationLevel.Basic;
-  }
+const agent = new Agent({
+  tools: [explainedTool],
+  systemPrompt: `
+    You are a helpful assistant. When using tools:
+    
+    1. Always explain your reasoning in the 'why' parameter
+    2. Be specific about what you're trying to achieve
+    3. Mention why this tool is better than alternatives
+    4. Keep explanations concise but informative
+    
+    Poor explanation: "Need information"
+    Good explanation: "Need current stock prices since user asked for today's performance and local data would be outdated"
+  `
 });
 ```
 
 ## Common Use Cases
 
-### 1. **Healthcare Diagnostics**
+### 1. **Research Assistants**
 ```typescript
-const diagnosticTool = withExplanation(medicalAnalysisTool, {
-  explanationTemplate: {
-    symptomAnalysis: "Based on these symptoms, I need to check...",
-    riskAssessment: "The risk factors suggest...",
-    recommendedAction: "This diagnostic approach is appropriate because..."
-  }
+const researchTool = withExplanation(webSearchTool, {
+  explanationPrompt: "Explain what information you're seeking and why web search is necessary over local knowledge"
 });
 ```
 
-### 2. **Financial Trading**
-```typescript
-const tradingTool = withExplanation(marketAnalysisTool, {
-  explanationTemplate: {
-    marketConditions: "Current market conditions indicate...",
-    riskJustification: "This risk level is appropriate because...",
-    expectedOutcome: "Based on analysis, I expect..."
-  }
-});
-```
-
-### 3. **Customer Service**
+### 2. **Customer Service**
 ```typescript
 const supportTool = withExplanation(customerResolutionTool, {
-  explanationTemplate: {
-    problemAnalysis: "Based on the customer's issue...",
-    solutionChoice: "This resolution approach is best because...",
-    alternativesConsidered: "I chose this over other options because..."
-  }
+  explanationPrompt: "Explain why this resolution approach is best for the customer's specific issue"
+});
+```
+
+### 3. **Data Analysis**
+```typescript
+const analysisTool = withExplanation(dataProcessingTool, {
+  explanationPrompt: "Explain what analysis you're performing and why it's relevant to the user's question"
 });
 ```
 
@@ -445,23 +402,9 @@ const supportTool = withExplanation(customerResolutionTool, {
 // Problem: Agent gives vague explanations
 "why": "Need information"
 
-// Solution: Use explanation validation
+// Solution: Use specific prompts
 const improvedTool = withExplanation(tool, {
-  minimumWords: 15,
-  requireSpecifics: true,
-  validationPrompt: "Be specific about what information you need and why"
-});
-```
-
-#### Over-Explanation
-```typescript
-// Problem: Explanations become too verbose
-"why": "I need to search for information because the user asked a question and I want to provide a good answer..."
-
-// Solution: Set length limits and guidance
-const balancedTool = withExplanation(tool, {
-  maxWords: 30,
-  guidance: "Be concise but specific - focus on the key reason"
+  explanationPrompt: "Be specific about what information you need and why this tool is the best choice"
 });
 ```
 
@@ -470,9 +413,9 @@ const balancedTool = withExplanation(tool, {
 // Problem: Explanations don't show broader strategy
 "why": "Need to search for cats"
 
-// Solution: Require strategic context
+// Solution: Guide strategic thinking
 const strategicTool = withExplanation(tool, {
-  requireContext: ['user goal', 'previous attempts', 'why this tool vs alternatives']
+  explanationPrompt: "Explain your goal, why this tool fits your strategy, and what you expect to accomplish"
 });
 ```
 
@@ -480,23 +423,22 @@ const strategicTool = withExplanation(tool, {
 
 ```typescript
 describe('Explanation Quality', () => {
-  it('should require meaningful explanations', async () => {
+  it('should require explanations when configured', async () => {
     const result = await explainedTool.execute({
-      query: 'test',
-      why: 'just because' // Should be rejected
+      query: 'test'
+      // Missing 'why' parameter
     });
     
-    expect(result.error).toContain('explanation quality');
+    expect(result.error).toBe('EXPLANATION_REQUIRED');
   });
   
-  it('should accept detailed explanations', async () => {
+  it('should accept valid explanations', async () => {
     const result = await explainedTool.execute({
       query: 'test',
       why: 'Need to verify test functionality because user reported specific error with this feature'
     });
     
     expect(result.success).toBe(true);
-    expect(result.explanation).toBeDefined();
   });
 });
 ```
@@ -504,8 +446,8 @@ describe('Explanation Quality', () => {
 ## Next Steps
 
 1. **Implement the Pattern**: Start by adding explanations to your most critical tools
-2. **Monitor Quality**: Track explanation quality and adjust requirements
-3. **Gather Feedback**: See how explanations help with debugging and trust
+2. **Monitor Quality**: Track how explanations help with debugging and trust
+3. **Iterate on Prompts**: Refine explanation prompts based on real usage
 4. **Expand Coverage**: Add explanations to more tools based on value
 
 ## Related Patterns

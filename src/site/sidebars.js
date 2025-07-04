@@ -51,6 +51,7 @@ const sidebars = {
       label: 'Implementation Examples',
       items: [
         'examples/tool-budget-openai-ts',
+        'examples/embedded-explaining-openai-ts',
         // 'examples/tool-budget-openai-python',
         // 'examples/tool-budget-pydantic-ai',
       ],
