@@ -21,4 +21,9 @@ Adds explanation requirements to tools for better observability and quality by r
 ### Tap Actions
 Transforms opaque AI agent operations into transparent, real-time insights by intercepting, aggregating, and presenting human-readable summaries of agent activities.
 
-[Learn more about Tap Actions →](./tap-actions) 
+[Learn more about Tap Actions →](./tap-actions)
+
+### Agent Switch
+Provides flat complexity scalability for categorical use cases by hiding the selection of specialized agents behind a single tool with categorical parameters.
+
+[Learn more about Agent Switch →](./agent-switch) 

@@ -31,6 +31,7 @@ const sidebars = {
         'patterns/tool-budget',
         'patterns/embedded-explaining',
         'patterns/tap-actions',
+        'patterns/agent-switch',
         // Add more patterns as they are created
       ],
     },
@@ -52,6 +53,7 @@ const sidebars = {
         'examples/tool-budget-openai-ts',
         'examples/embedded-explaining-openai-ts',
         'examples/tap-actions-openai-ts',
+        'examples/agent-switch-openai-ts',
       ],
     },
   ],
