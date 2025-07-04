@@ -26,4 +26,9 @@ Transforms opaque AI agent operations into transparent, real-time insights by in
 ### Agent Switch
 Provides flat complexity scalability for categorical use cases by hiding the selection of specialized agents behind a single tool with categorical parameters.
 
-[Learn more about Agent Switch →](./agent-switch) 
+[Learn more about Agent Switch →](./agent-switch)
+
+### On-Demand Context Retrieval
+Efficiently handles medium-sized documents by using a specialized agent to extract only relevant information, reducing token usage and improving performance in multi-turn conversations.
+
+[Learn more about On-Demand Context Retrieval →](./on-demand-context-retrieval) 

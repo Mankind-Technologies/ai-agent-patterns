@@ -32,6 +32,7 @@ const sidebars = {
         'patterns/embedded-explaining',
         'patterns/tap-actions',
         'patterns/agent-switch',
+        'patterns/on-demand-context-retrieval',
         // Add more patterns as they are created
       ],
     },
@@ -54,6 +55,7 @@ const sidebars = {
         'examples/embedded-explaining-openai-ts',
         'examples/tap-actions-openai-ts',
         'examples/agent-switch-openai-ts',
+        'examples/on-demand-context-retrieval-openai-ts',
       ],
     },
   ],
