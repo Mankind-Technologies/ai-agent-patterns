@@ -23,12 +23,15 @@ export class CountDownTimer {
         }
         const timePassed = Date.now() - this.startTime;
         const timePassedSeconds = timePassed / 1000;
+        console.log('Tool call ended. Going to inject the time passed text in the tool result.');
         if (timePassedSeconds > this.time) {
-            console.warn(`CountDownTimer: you are taking too long to complete your task. You have ${(timePassedSeconds - this.time).toFixed(1)} seconds over the time goal. It is late.`);
-            return `You are taking too long to complete your task. You have ${(timePassedSeconds - this.time).toFixed(1)} seconds over the time goal. It is late.`;
+            const text = `You are taking too long to complete your task. You have ${(timePassedSeconds - this.time).toFixed(1)} seconds over the time goal. It is late.`;
+            console.info(`Injecting in the tool result: "${text}"`);
+            return text;
         }
-        console.log('CountDownTimer: timePassed', timePassedSeconds);
-        return `${timePassedSeconds.toFixed(1)} seconds since you started, you have ${(this.time - timePassedSeconds).toFixed(1)} seconds left.`;
+        const text = `${timePassedSeconds.toFixed(1)} seconds since you started, you have ${(this.time - timePassedSeconds).toFixed(1)} seconds left.`;
+        console.log(`Injecting in the tool result: "${text}"`);
+        return text;
     }
 
     public wrapTool(originalTool: any) { // don't get me started on the type safety of this, we can't import ToolOptions...
@@ -44,7 +47,7 @@ export class CountDownTimer {
                     };
                 }
                 // this result may be a string
-                return `${result} ${this.getTimePassedText()}`;
+                return `${result}\n\n${this.getTimePassedText()}`;
             }
         };
     }
