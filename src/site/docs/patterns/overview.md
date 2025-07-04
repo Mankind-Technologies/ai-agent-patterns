@@ -16,4 +16,9 @@ Controls tool usage with budget constraints to prevent expensive operations from
 ### Embedded Explaining
 Adds explanation requirements to tools for better observability and quality by requiring agents to justify their tool usage decisions.
 
-[Learn more about Embedded Explaining →](./embedded-explaining) 
+[Learn more about Embedded Explaining →](./embedded-explaining)
+
+### Tap Actions
+Transforms opaque AI agent operations into transparent, real-time insights by intercepting, aggregating, and presenting human-readable summaries of agent activities.
+
+[Learn more about Tap Actions →](./tap-actions) 
