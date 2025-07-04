@@ -55,4 +55,4 @@ This project is open-source and welcomes contributions:
 
 - [Get Started](./getting-started.md) with implementing your first pattern
 - [Browse Patterns](./patterns/overview.md) to find solutions for your use case
-- [View Examples](./examples/tool-budget-openai-ts.md) to see patterns in action 
+- [View Examples](./examples/tool-budget-openai-ts.md) to see patterns in action

@@ -31,51 +31,11 @@ npm install openai-agent-sdk
 [Learn More →](./openai-agent-sdk-ts.md)
 </div>
 
-### OpenAI Agent SDK (Python)
-<div className="pattern-card">
-<div className="badges">
-<span className="badge badge--agent">Python</span>
-<span className="badge badge--pattern">Data Science</span>
-</div>
+### Coming Soon: Python Support
+We're working on implementing pattern support for:
+- OpenAI Agent SDK (Python)
+- Pydantic AI
 
-**Best For**: Data science workflows, ML pipelines, Django/Flask applications
-
-**Key Features**:
-- Pythonic API design
-- Integration with scientific computing stack
-- Excellent for data processing and analysis
-- Great for Jupyter notebooks and research
-
-**Installation**:
-```bash
-pip install openai-agent-sdk
-```
-
-Learn More (coming soon)
-</div>
-
-### Pydantic AI
-<div className="pattern-card">
-<div className="badges">
-<span className="badge badge--agent">Python</span>
-<span className="badge badge--tool">Type Safety</span>
-</div>
-
-**Best For**: Type-safe applications, FastAPI integration, production Python services
-
-**Key Features**:
-- Built-in data validation with Pydantic
-- Type-safe tool definitions
-- Excellent FastAPI integration
-- Strong schema validation
-
-**Installation**:
-```bash
-pip install pydantic-ai
-```
-
-Learn More (coming soon)
-</div>
 
 ## Choosing the Right Library
 
@@ -84,86 +44,36 @@ Learn More (coming soon)
 | Language | Libraries Available | Recommendation |
 |----------|-------------------|----------------|
 | **TypeScript/JavaScript** | OpenAI Agent SDK | Best choice for web applications |
-| **Python** | OpenAI Agent SDK, Pydantic AI | OpenAI SDK for ML/research, Pydantic AI for web services |
+| **Python** | Coming Soon | Python support in development |
 
 ### By Application Type
 
 | Application Type | Recommended Library | Reason |
 |------------------|-------------------|--------|
 | **Web Frontend** | OpenAI Agent SDK (TS) | React integration, browser compatibility |
-| **API Services** | Pydantic AI | Type safety, FastAPI integration |
-| **Data Science** | OpenAI Agent SDK (Python) | Scientific computing ecosystem |
 | **Serverless** | OpenAI Agent SDK (TS) | Lightweight, fast cold starts |
-| **Enterprise** | Pydantic AI | Strong validation, type safety |
+| **Node.js Backend** | OpenAI Agent SDK (TS) | Full TypeScript ecosystem support |
 
 ### By Team Expertise
 
 | Team Background | Recommended Library | Benefits |
 |-----------------|-------------------|----------|
 | **Frontend Developers** | OpenAI Agent SDK (TS) | Familiar patterns, great tooling |
-| **Data Scientists** | OpenAI Agent SDK (Python) | Jupyter integration, NumPy/Pandas |
-| **Backend Engineers** | Pydantic AI | Type safety, validation, FastAPI |
-| **Full-Stack Teams** | OpenAI Agent SDK (both) | Consistency across stack |
+| **Backend Engineers** | OpenAI Agent SDK (TS) | Type safety, modern async patterns |
+| **Full-Stack Teams** | OpenAI Agent SDK (TS) | Consistency across stack |
 
 ## Pattern Compatibility
 
 All patterns are designed to work across all supported libraries:
 
-| Pattern | TypeScript | Python (OpenAI) | Pydantic AI | Notes |
-|---------|------------|-----------------|-------------|-------|
-| **Tool Budget** | ✅ | ✅ | ✅ | Full feature parity |
-| **Fallback Chain** | 🚧 | 🚧 | 🚧 | Coming soon |
-| **Rate Limiting** | 🚧 | 🚧 | 🚧 | Coming soon |
-| **Circuit Breaker** | 🚧 | 🚧 | 🚧 | Coming soon |
+| Pattern | TypeScript | Notes |
+|---------|------------|-------|
+| **Tool Budget** | ✅ | Full implementation available |
+| **Embedded Explaining** | ✅ | Full implementation available |
 
 ## Migration Between Libraries
 
-### From OpenAI SDK (Python) to Pydantic AI
-
-```python
-# Before (OpenAI SDK)
-from openai_agent_sdk import Agent
-
-def my_tool(input: str) -> str:
-    return process_input(input)
-
-agent = Agent(tools=[my_tool])
-
-# After (Pydantic AI)
-from pydantic_ai import Agent
-from pydantic import BaseModel
-
-class MyInput(BaseModel):
-    input: str
-
-class MyOutput(BaseModel):
-    result: str
-
-def my_tool(input: MyInput) -> MyOutput:
-    return MyOutput(result=process_input(input.input))
-
-agent = Agent(tools=[my_tool])
-```
-
-### From TypeScript to Python
-
-```typescript
-// TypeScript
-const tool = {
-  name: "myTool",
-  description: "Does something useful",
-  execute: async (input: string) => {
-    return await processInput(input);
-  }
-};
-```
-
-```python
-# Python equivalent
-def my_tool(input: str) -> str:
-    """Does something useful"""
-    return process_input(input)
-```
+*Migration guides will be available once Python support is implemented.*
 
 ## Getting Started
 
@@ -174,11 +84,10 @@ Based on your tech stack and requirements above.
 Follow the installation instructions for your chosen library.
 
 ### 3. Implement Your First Pattern
-Start with the [Tool Budget Pattern](../patterns/tool-budget.md):
+Start with the [Tool Budget Pattern](../patterns/tool-budget.md) or [Embedded Explaining Pattern](../patterns/embedded-explaining.md):
 
-- [TypeScript Example](../examples/tool-budget-openai-ts.md)
-- Python Example (coming soon)
-- Pydantic AI Example (coming soon)
+- [Tool Budget TypeScript Example](../examples/tool-budget-openai-ts.md)
+- [Embedded Explaining TypeScript Example](../examples/embedded-explaining-openai-ts.md)
 
 ### 4. Explore Advanced Patterns
 Once you're comfortable with the basics, explore more complex patterns and combinations.
@@ -188,7 +97,6 @@ Once you're comfortable with the basics, explore more complex patterns and combi
 ### Library-Specific Resources
 
 - **OpenAI Agent SDK**: [GitHub](https://github.com/openai/agent-sdk) | [Documentation](https://docs.openai.com/agent-sdk)
-- **Pydantic AI**: [GitHub](https://github.com/pydantic/pydantic-ai) | [Documentation](https://pydantic.ai)
 
 ### Pattern-Specific Help
 

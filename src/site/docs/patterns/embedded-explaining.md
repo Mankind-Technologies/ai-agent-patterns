@@ -453,6 +453,5 @@ describe('Explanation Quality', () => {
 ## Related Patterns
 
 - [Tool Budget Pattern](./tool-budget.md) - Combine explanations with cost justification
-- **Audit Pattern** - Use explanations for compliance and auditing
-- **Retry Logic Pattern** - Explain why retries are appropriate
-- **Decision Tree Pattern** - Document decision branching with explanations 
+
+*Additional patterns for audit, retry logic, and decision trees are planned for future implementation.* 

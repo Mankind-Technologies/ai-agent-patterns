@@ -503,4 +503,4 @@ const parallelTools = {
 - [OpenAI Agent SDK Documentation](https://docs.openai.com/agent-sdk)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Tool Budget Pattern Examples](../examples/tool-budget-openai-ts.md)
-- Best Practices Guide (coming soon) 
+- [Embedded Explaining Pattern Examples](../examples/embedded-explaining-openai-ts.md) 

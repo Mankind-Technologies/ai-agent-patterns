@@ -96,23 +96,9 @@ Our patterns are organized into categories:
 
 ### 🔧 **Resource Management**
 - **Tool Budget**: Limit expensive operations
-- **Rate Limiting**: Control request frequency
-- **Caching**: Reduce redundant operations
-
-### 🤝 **Tool Coordination**
-- **Fallback Chain**: Graceful degradation between tools
-- **Tool Prioritization**: Smart tool selection
-- **Parallel Execution**: Concurrent tool usage
-
-### 🛡️ **Error Handling**
-- **Retry Logic**: Intelligent retry mechanisms
-- **Circuit Breaker**: Prevent cascading failures
-- **Graceful Degradation**: Maintain functionality during failures
 
 ### 📊 **Monitoring & Observability**
-- **Usage Tracking**: Monitor tool usage patterns
-- **Performance Metrics**: Track agent performance
-- **Cost Attribution**: Understand resource consumption
+- **Embedded Explaining**: Require agents to explain their tool choices
 
 ## Best Practices for Implementation
 
@@ -150,10 +136,9 @@ Your needs will evolve - build patterns that can adapt and be configured.
 
 ## Next Steps
 
-1. **Choose Your First Pattern**: Start with [Tool Budget Pattern](./patterns/tool-budget.md) if you're concerned about costs
+1. **Choose Your First Pattern**: Start with [Tool Budget Pattern](./patterns/tool-budget.md) if you're concerned about costs or [Embedded Explaining Pattern](./patterns/embedded-explaining.md) if you need better observability
 2. **Explore Examples**: Check out [working examples](./examples/tool-budget-openai-ts.md) in your preferred library
-3. **Read Best Practices**: Learn from implementation guides (coming soon)
-4. **Join the Community**: Share your experiences and learn from others
+3. **Join the Community**: Share your experiences and learn from others
 
 ## Need Help?
 

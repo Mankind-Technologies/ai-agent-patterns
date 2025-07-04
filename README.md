@@ -18,8 +18,9 @@ This repository stores, explains, and studies different patterns for AI agents, 
 
 ## Supported Libraries
 
-- OpenAI Agent SDK (TypeScript & Python)
-- Pydantic AI Agents
+- OpenAI Agent SDK (TypeScript)
+
+*Python support for OpenAI Agent SDK and Pydantic AI is in development*
 
 ## Structure
 

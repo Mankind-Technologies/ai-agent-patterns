@@ -603,6 +603,4 @@ const persistentBudget = (tool: any, options: any) => {
 
 ## Related Patterns
 
-- Fallback Chain Pattern (coming soon) - Provide alternatives when budget is exhausted
-- Rate Limiting Pattern (coming soon) - Control request frequency
-- Caching Pattern (coming soon) - Reduce redundant operations 
+- [Embedded Explaining Pattern](./embedded-explaining-openai-ts.md) - Add explanation requirements to budgeted tools

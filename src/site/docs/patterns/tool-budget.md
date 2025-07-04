@@ -406,7 +406,6 @@ const completeeTool = budget(tool, {
 
 ## Related Patterns
 
-- **Rate Limiting Pattern**: Control request frequency
-- **Caching Pattern**: Reduce redundant operations
-- **Fallback Chain Pattern**: Provide alternative tools when budget is exhausted
-- **Usage Tracking Pattern**: Monitor and analyze tool usage patterns 
+- [Embedded Explaining Pattern](./embedded-explaining.md): Combine budget constraints with explanation requirements
+
+*Additional patterns for rate limiting, caching, fallback chains, and usage tracking are planned for future implementation.* 

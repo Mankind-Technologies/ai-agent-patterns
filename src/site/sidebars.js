@@ -42,8 +42,6 @@ const sidebars = {
       items: [
         'libraries/overview',
         'libraries/openai-agent-sdk-ts',
-        // 'libraries/openai-agent-sdk-python',
-        // 'libraries/pydantic-ai',
       ],
     },
     {
@@ -52,8 +50,6 @@ const sidebars = {
       items: [
         'examples/tool-budget-openai-ts',
         'examples/embedded-explaining-openai-ts',
-        // 'examples/tool-budget-openai-python',
-        // 'examples/tool-budget-pydantic-ai',
       ],
     },
   ],
