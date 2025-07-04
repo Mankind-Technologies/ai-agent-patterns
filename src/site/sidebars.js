@@ -33,6 +33,7 @@ const sidebars = {
         'patterns/tap-actions',
         'patterns/agent-switch',
         'patterns/on-demand-context-retrieval',
+        'patterns/countdown-timer',
         // Add more patterns as they are created
       ],
     },
@@ -56,6 +57,7 @@ const sidebars = {
         'examples/tap-actions-openai-ts',
         'examples/agent-switch-openai-ts',
         'examples/on-demand-context-retrieval-openai-ts',
+        'examples/countdown-timer-openai-ts',
       ],
     },
   ],

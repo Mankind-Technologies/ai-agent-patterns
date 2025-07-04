@@ -31,4 +31,9 @@ Provides flat complexity scalability for categorical use cases by hiding the sel
 ### On-Demand Context Retrieval
 Efficiently handles medium-sized documents by using a specialized agent to extract only relevant information, reducing token usage and improving performance in multi-turn conversations.
 
-[Learn more about On-Demand Context Retrieval →](./on-demand-context-retrieval) 
+[Learn more about On-Demand Context Retrieval →](./on-demand-context-retrieval)
+
+### Countdown Timer
+Provides real-time awareness to LLMs by wrapping tools to include time information, enabling better task prioritization and quality vs. speed trade-offs.
+
+[Learn more about Countdown Timer →](./countdown-timer) 
