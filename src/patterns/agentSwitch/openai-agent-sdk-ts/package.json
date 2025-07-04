@@ -1,0 +1,24 @@
+{
+  "name": "agentSwitch",
+  "version": "1.0.0",
+  "description": "Agent Switch Pattern Example - Multi-Brand Car Sales Assistant",
+  "main": "index.ts",
+  "scripts": {
+    "start": "tsx index.ts",
+    "dev": "tsx watch index.ts",
+    "interactive": "tsx index.ts --interactive",
+    "compare": "tsx index.ts --compare"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openai/agents": "^0.0.10",
+    "openai": "^5.8.2",
+    "zod": "^3.25.71"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
