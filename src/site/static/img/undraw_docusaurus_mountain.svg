@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#f8fafc"/>
+  <path d="M40 140L100 60L160 140H40Z" fill="#6366f1"/>
+  <path d="M80 140L120 80L160 140H80Z" fill="#8b5cf6"/>
+  <circle cx="170" cy="40" r="15" fill="#f59e0b"/>
+  <text x="100" y="180" text-anchor="middle" fill="#6366f1" font-family="Arial" font-size="12">Proven Patterns</text>
+</svg> 

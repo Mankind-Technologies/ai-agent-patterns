@@ -1,0 +1,113 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  
+  /* AI Agent Patterns Custom Variables */
+  --ifm-color-agent: #6366f1;
+  --ifm-color-pattern: #8b5cf6;
+  --ifm-color-tool: #06b6d4;
+  --ifm-color-budget: #f59e0b;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom styles for AI Agent Patterns */
+.hero--primary {
+  background: linear-gradient(135deg, var(--ifm-color-agent) 0%, var(--ifm-color-pattern) 100%);
+}
+
+.badge--agent {
+  background-color: var(--ifm-color-agent);
+  color: white;
+}
+
+.badge--pattern {
+  background-color: var(--ifm-color-pattern);
+  color: white;
+}
+
+.badge--tool {
+  background-color: var(--ifm-color-tool);
+  color: white;
+}
+
+.badge--budget {
+  background-color: var(--ifm-color-budget);
+  color: white;
+}
+
+/* Pattern cards styling */
+.pattern-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.pattern-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.pattern-card h3 {
+  color: var(--ifm-color-agent);
+  margin-bottom: 0.5rem;
+}
+
+.pattern-card .badges {
+  margin-bottom: 1rem;
+}
+
+.pattern-card .badges .badge {
+  margin-right: 0.5rem;
+}
+
+/* Code block enhancements */
+.theme-code-block {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom admonitions */
+.admonition-pattern {
+  border-left: 4px solid var(--ifm-color-pattern);
+}
+
+.admonition-agent {
+  border-left: 4px solid var(--ifm-color-agent);
+}
+
+.admonition-tool {
+  border-left: 4px solid var(--ifm-color-tool);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pattern-card {
+    padding: 1rem;
+  }
+} 

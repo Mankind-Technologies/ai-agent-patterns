@@ -1,0 +1,32 @@
+{
+  "name": "embedded-explaining-pattern",
+  "version": "1.0.0",
+  "description": "AI Agent Pattern: Embedded Explaining - Adds explanation requirements to tools for better observability and quality",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch index.ts",
+    "start": "tsx index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "pattern",
+    "explaining",
+    "observability",
+    "transparency",
+    "openai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openai/agents": "^0.0.10",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+} 

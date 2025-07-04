@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsx index.ts",
     "dev": "tsx watch index.ts",
-    "interactive": "tsx index.ts --interactive"
+    "interactive": "tsx index.ts --interactive",
+    "compare": "tsx index.ts --compare"
   },
   "author": "",
   "license": "ISC",

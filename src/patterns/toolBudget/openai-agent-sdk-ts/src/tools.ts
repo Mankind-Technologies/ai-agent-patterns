@@ -72,6 +72,7 @@ async function simulateWebScraping(url: string, topic: string): Promise<WebScrap
     };
 }
 
+// Budgeted web scraping tool
 export function createWebScrapeTool(maxUses: number = 3) {
     return tool(budget({
         name: "webScrape",
@@ -83,6 +84,17 @@ export function createWebScrapeTool(maxUses: number = 3) {
         },
     }, {maxTimes: maxUses}));
 }
+
+// Non-budgeted web scraping tool (for comparison)
+export const webScrapeToolUnlimited = tool({
+    name: "webScrape",
+    description: "Scrape web content for the latest information. This is an expensive operation that involves network requests, parsing, and data extraction.",
+    parameters: webScrapeInputSchema,
+    execute: async (input: z.infer<typeof webScrapeInputSchema>): Promise<WebScrapeToolOutput> => {
+        logger(`[webScrape-UNLIMITED] Starting expensive web scraping for: ${input.topic} from ${input.url}`);
+        return await simulateWebScraping(input.url, input.topic);
+    },
+});
 
 // Local Search Tool (Free)
 export const localSearchInputSchema = z.object({
@@ -111,4 +123,111 @@ export const localSearchTool = tool({
             source: "local_knowledge_base"
         };
     },
-}); 
+});
+
+// Tool usage tracking
+export interface ToolUsageStats {
+    webScrapeCount: number;
+    localSearchCount: number;
+    totalCost: number; // Simulated cost in dollars
+    totalTime: number; // Simulated time in seconds
+}
+
+export class ToolUsageTracker {
+    private stats: ToolUsageStats = {
+        webScrapeCount: 0,
+        localSearchCount: 0,
+        totalCost: 0,
+        totalTime: 0
+    };
+
+    reset() {
+        this.stats = {
+            webScrapeCount: 0,
+            localSearchCount: 0,
+            totalCost: 0,
+            totalTime: 0
+        };
+    }
+
+    trackWebScrape(processingTime: number = 2.0) {
+        this.stats.webScrapeCount++;
+        this.stats.totalCost += 0.10; // $0.10 per web scrape (simulated)
+        this.stats.totalTime += processingTime;
+    }
+
+    trackLocalSearch() {
+        this.stats.localSearchCount++;
+        this.stats.totalTime += 0.1; // Very fast local search
+    }
+
+    getStats(): ToolUsageStats {
+        return { ...this.stats };
+    }
+
+    getSummary(): string {
+        return `
+📊 Usage Summary:
+- Web Scraping: ${this.stats.webScrapeCount} calls (💰 $${this.stats.totalCost.toFixed(2)})
+- Local Search: ${this.stats.localSearchCount} calls (🆓 Free)
+- Total Time: ${this.stats.totalTime.toFixed(1)}s
+- Total Cost: $${this.stats.totalCost.toFixed(2)}`;
+    }
+}
+
+// Global trackers for comparison
+export const budgetedTracker = new ToolUsageTracker();
+export const unlimitedTracker = new ToolUsageTracker();
+
+// Enhanced tools with tracking
+export function createTrackedWebScrapeTool(maxUses: number = 3, tracker: ToolUsageTracker) {
+    return tool(budget({
+        name: "webScrape",
+        description: "Scrape web content for the latest information. This is an expensive operation that involves network requests, parsing, and data extraction.",
+        parameters: webScrapeInputSchema,
+        execute: async (input: z.infer<typeof webScrapeInputSchema>): Promise<WebScrapeToolOutput> => {
+            logger(`[webScrape-BUDGETED] Starting expensive web scraping for: ${input.topic} from ${input.url}`);
+            const result = await simulateWebScraping(input.url, input.topic);
+            if (result.success) {
+                tracker.trackWebScrape(result.processingTime);
+            }
+            return result;
+        },
+    }, {maxTimes: maxUses}));
+}
+
+export function createTrackedWebScrapeToolUnlimited(tracker: ToolUsageTracker) {
+    return tool({
+        name: "webScrape",
+        description: "Scrape web content for the latest information. This is an expensive operation that involves network requests, parsing, and data extraction.",
+        parameters: webScrapeInputSchema,
+        execute: async (input: z.infer<typeof webScrapeInputSchema>): Promise<WebScrapeToolOutput> => {
+            logger(`[webScrape-UNLIMITED] Starting expensive web scraping for: ${input.topic} from ${input.url}`);
+            const result = await simulateWebScraping(input.url, input.topic);
+            if (result.success) {
+                tracker.trackWebScrape(result.processingTime);
+            }
+            return result;
+        },
+    });
+}
+
+export function createTrackedLocalSearchTool(tracker: ToolUsageTracker) {
+    return tool({
+        name: "localSearch",
+        description: "Search through local knowledge base for information. This is a free operation with no usage limits.",
+        parameters: localSearchInputSchema,
+        execute: async (input: z.infer<typeof localSearchInputSchema>): Promise<LocalSearchToolOutput> => {
+            logger(`[localSearch] Searching local knowledge for: ${input.query}`);
+            
+            const results = searchKnowledgeBase(input.query, input.category || undefined);
+            tracker.trackLocalSearch();
+            
+            return {
+                results,
+                success: true,
+                source: "local_knowledge_base"
+            };
+        },
+    });
+} 
