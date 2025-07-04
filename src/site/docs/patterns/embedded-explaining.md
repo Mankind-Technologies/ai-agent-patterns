@@ -443,6 +443,14 @@ describe('Explanation Quality', () => {
 });
 ```
 
+## Example Implementation
+
+A simplified example implementation of this pattern is available in the repository:
+
+📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/embeddedExplaining/openai-agent-sdk-ts)**
+
+This implementation demonstrates the core concepts of the Embedded Explaining Pattern using the OpenAI Agent SDK for TypeScript. Note that this is a simplified example designed for educational purposes and may need adaptation for production use.
+
 ## Next Steps
 
 1. **Implement the Pattern**: Start by adding explanations to your most critical tools

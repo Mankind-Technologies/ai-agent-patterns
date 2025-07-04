@@ -16,3 +16,8 @@ Store, explain and study different useful AI agent patterns. This includes patte
 
 `src/site` the website where the patterns are explained
 `src/patterns/{pattern}/{lib-name}` directory with a pattern exemplified for a library
+
+## Metadata
+
+The url of the published site is https://mankind-technologies.github.io/ai-agent-patterns/
+The url of the public repo is https://github.com/Mankind-Technologies/ai-agent-patterns
