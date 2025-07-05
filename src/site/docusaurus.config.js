@@ -84,12 +84,6 @@ const config = {
             position: 'left',
             label: 'Patterns',
           },
-          {
-            type: 'docSidebar',
-            sidebarId: 'librariesSidebar',
-            position: 'left',
-            label: 'Libraries',
-          },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/Mankind-Technologies/ai-agent-patterns',
@@ -101,32 +95,19 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-                      {
-              title: 'Patterns',
-              items: [
-                {
-                  label: 'Tool Budget',
-                  to: '/docs/patterns/tool-budget',
-                },
-                {
-                  label: 'All Patterns',
-                  to: '/docs/patterns/overview',
-                },
-              ],
-            },
-                      {
-              title: 'Libraries',
-              items: [
-                {
-                  label: 'OpenAI Agent SDK (TypeScript)',
-                  to: '/docs/libraries/openai-agent-sdk-ts',
-                },
-                {
-                  label: 'Libraries Overview',
-                  to: '/docs/libraries/overview',
-                },
-              ],
-            },
+          {
+            title: 'Patterns',
+            items: [
+              {
+                label: 'Tool Budget',
+                to: '/docs/patterns/tool-budget',
+              },
+              {
+                label: 'All Patterns',
+                to: '/docs/patterns/overview',
+              },
+            ],
+          },
           {
             title: 'More',
             items: [

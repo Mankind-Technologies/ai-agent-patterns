@@ -105,6 +105,15 @@ Let's analyze a scenario with 10k token context, 100 tokens of relevant info, an
 
 **Result**: ~84% reduction in token usage
 
-## Examples
+## Example Implementation
 
-- [On-Demand Context Retrieval with OpenAI Agent SDK (TypeScript)](../examples/on-demand-context-retrieval-openai-ts) 
+A complete implementation of this pattern is available in the repository:
+
+📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/onDemandContextRetrieval/openai-agent-sdk-ts)**
+
+This implementation demonstrates the core concepts of the On-Demand Context Retrieval Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Configuration options and examples
+- Integration with OpenAI Agent SDK
+- Test cases and usage scenarios 

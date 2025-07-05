@@ -399,15 +399,20 @@ const completeeTool = budget(tool, {
 
 ## Example Implementation
 
-A simplified example implementation of this pattern is available in the repository:
+A complete implementation of this pattern is available in the repository:
 
 📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/toolBudget/openai-agent-sdk-ts)**
 
-This implementation demonstrates the core concepts of the Tool Budget Pattern using the OpenAI Agent SDK for TypeScript. Note that this is a simplified example designed for educational purposes and may need adaptation for production use.
+This implementation demonstrates the core concepts of the Tool Budget Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Configuration options and examples
+- Integration with OpenAI Agent SDK
+- Test cases and usage scenarios
 
 ## Next Steps
 
-1. **Implement the Pattern**: Start with the [OpenAI TypeScript example](../examples/tool-budget-openai-ts.md)
+1. **Implement the Pattern**: Start with the [GitHub example](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/toolBudget/openai-agent-sdk-ts)
 2. **Monitor Usage**: Track how agents use budgeted tools
 3. **Optimize Budgets**: Adjust limits based on real usage patterns
 4. **Explore Combinations**: Combine with other patterns for advanced scenarios

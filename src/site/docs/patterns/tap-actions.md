@@ -296,11 +296,16 @@ The decoupled approach enables reusability across multiple agents and within age
 
 ## Example Implementation
 
-A simplified example implementation of this pattern is available in the repository:
+A complete implementation of this pattern is available in the repository:
 
 📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/tapActions/openai-agent-sdk-ts)**
 
-This implementation demonstrates the core concepts of the Tap Actions Pattern using the OpenAI Agent SDK for TypeScript. Note that this is a simplified example designed for educational purposes and may need adaptation for production use.
+This implementation demonstrates the core concepts of the Tap Actions Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Configuration options and examples
+- Integration with OpenAI Agent SDK
+- Test cases and usage scenarios
 
 ---
 

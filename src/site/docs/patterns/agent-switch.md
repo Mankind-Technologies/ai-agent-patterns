@@ -134,6 +134,15 @@ This pattern lets the brands scale with flat complexity (or almost). The only th
 - Requires careful parameter design
 - May need lazy loading for performance optimization
 
-## Examples
+## Example Implementation
 
-- [Agent Switch with OpenAI Agent SDK (TypeScript)](../examples/agent-switch-openai-ts) 
+A complete implementation of this pattern is available in the repository:
+
+📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/agentSwitch/openai-agent-sdk-ts)**
+
+This implementation demonstrates the core concepts of the Agent Switch Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Configuration options and examples
+- Integration with OpenAI Agent SDK
+- Test cases and usage scenarios 

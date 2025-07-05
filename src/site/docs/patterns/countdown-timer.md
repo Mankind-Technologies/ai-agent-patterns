@@ -107,6 +107,15 @@ const analysisTimer = new CountDownTimer({time: 60});
 
 > **Observation**: We noticed that LLMs (the ones we tested) are willing to be slightly late when the task quality requires it.
 
-## Examples
+## Example Implementation
 
-- [Countdown Timer with OpenAI Agent SDK (TypeScript)](../examples/countdown-timer-openai-ts) 
+A complete implementation of this pattern is available in the repository:
+
+📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/countDownTimer/openai-agent-sdk-ts)**
+
+This implementation demonstrates the core concepts of the Countdown Timer Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Configuration options and examples
+- Integration with OpenAI Agent SDK
+- Test cases and usage scenarios 

@@ -38,29 +38,6 @@ const sidebars = {
       ],
     },
   ],
-
-  librariesSidebar: [
-    {
-      type: 'category',
-      label: 'Supported Libraries',
-      items: [
-        'libraries/overview',
-        'libraries/openai-agent-sdk-ts',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Implementation Examples',
-      items: [
-        'examples/tool-budget-openai-ts',
-        'examples/embedded-explaining-openai-ts',
-        'examples/tap-actions-openai-ts',
-        'examples/agent-switch-openai-ts',
-        'examples/on-demand-context-retrieval-openai-ts',
-        'examples/countdown-timer-openai-ts',
-      ],
-    },
-  ],
 };
 
 export default sidebars; 
