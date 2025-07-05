@@ -36,4 +36,9 @@ Efficiently handles medium-sized documents by using a specialized agent to extra
 ### Countdown Timer
 Provides real-time awareness to LLMs by wrapping tools to include time information, enabling better task prioritization and quality vs. speed trade-offs.
 
-[Learn more about Countdown Timer →](./countdown-timer) 
+[Learn more about Countdown Timer →](./countdown-timer)
+
+### Surrender Task
+Enables AI agents to fail gracefully when tasks become impossible or impractical, preventing resource waste and providing clear feedback to users and systems.
+
+[Learn more about Surrender Task →](./surrender-task) 

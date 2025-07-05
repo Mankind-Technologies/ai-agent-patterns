@@ -4,49 +4,54 @@ import { noisySearchContactsToolWithNoTurnCount } from './sampleTools';
 
 async function runAgentThatCanNotSurrenderWithTools(tools: Tool[], task: string) {
     const agent = new Agent({
-        name: 'UserAssistantThatCanSurrender',
+        name: 'SearchAssistantThatCannotSurrender',
         model: "gpt-4o-mini",
         tools: tools,
         instructions: `
-You are a helpful assistant that can search for my contacts.
-You MUST make every possible effort to complete the task successfully.
-Try multiple search strategies, different search terms, and exhaust all available approaches before even considering surrender.
-`,
+            You are a helpful assistant that can search for contacts.
+            You MUST make every possible effort to complete the task successfully.
+            Try multiple search strategies, different search terms, and exhaust all available approaches.
+            Always try to be helpful, even when search results are not perfect.
+            Provide the best possible response based on available information.
+        `,
         outputType: z.object({
-            responseToUser: z.string().describe('What the user will see as the response to their request, human readable, non technical language.'),
+            responseToUser: z.string().describe('What the user will see as the response to their request, human readable, non-technical language.'),
         }),
-        
     });
+    
     const result = await run(agent, task);
     return result;
 }
 
 export async function noisySearchCaseThatCanNotSurrender() {
-    const task = "Who is Jhon Mark? I have a meeting with him next week.";
+    const task = "Who is John Mark? I have a meeting with him next week.";
+    
     const cases = {
         "Noisy search contacts tool": [noisySearchContactsToolWithNoTurnCount],
-    }
+    };
     
-    for (const [key, value] of Object.entries(cases)) {
+    for (const [caseName, tools] of Object.entries(cases)) {
         console.log("--------------------------------");
-        console.log(`Running case: ${key}`);
+        console.log(`Running case: ${caseName}`);
+        
         try {
-            const result = await runAgentThatCanNotSurrenderWithTools(value, task);
+            const result = await runAgentThatCanNotSurrenderWithTools(tools, task);
             const output = result.finalOutput;
+            
             if (!output) {
                 console.log("Error: No output received from agent");
                 continue;
             }
+            
             console.log(`Response to user: ${output.responseToUser}`);
-            console.log(`Turns: ${result.state._currentTurn}`);
+            console.log(`Turns used: ${result.state._currentTurn}`);
         } catch (error) {
             if (error instanceof MaxTurnsExceededError) {
-                console.log("Exit because max turns exceeded: ", error instanceof MaxTurnsExceededError);
+                console.log("Agent exceeded maximum turns before completing task");
             } else {
-                console.log("Error: ", error);
+                console.log(`Error running case ${caseName}:`, error);
             }
         }
     }
-    
 }
 

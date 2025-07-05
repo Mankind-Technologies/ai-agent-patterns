@@ -34,6 +34,7 @@ const sidebars = {
         'patterns/agent-switch',
         'patterns/on-demand-context-retrieval',
         'patterns/countdown-timer',
+        'patterns/surrender-task',
         // Add more patterns as they are created
       ],
     },
