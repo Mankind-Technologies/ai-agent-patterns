@@ -30,7 +30,7 @@ Choose your path:
 
 1. **New to AI Agents?** Start with our [Getting Started Guide](./getting-started.md)
 2. **Looking for Specific Solutions?** Browse our [Patterns Overview](./patterns/overview.md)
-3. **Framework-Specific Help?** Check our [Libraries Overview](./libraries/overview.md)
+3. **Framework-Specific Help?** Browse our [Pattern Examples](./patterns/overview.md)
 
 ## Featured Pattern: Tool Budget
 
@@ -55,4 +55,4 @@ This project is open-source and welcomes contributions:
 
 - [Get Started](./getting-started.md) with implementing your first pattern
 - [Browse Patterns](./patterns/overview.md) to find solutions for your use case
-- [View Examples](./examples/tool-budget-openai-ts.md) to see patterns in action
+- [View Tool Budget Pattern](./patterns/tool-budget.md) to see patterns in action

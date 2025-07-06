@@ -38,6 +38,11 @@ Provides real-time awareness to LLMs by wrapping tools to include time informati
 
 [Learn more about Countdown Timer →](./countdown-timer)
 
+### Countdown Turns
+Provides visibility into turn consumption, enabling agents to plan strategically and balance quality with resource constraints by making turn limits visible to the agent.
+
+[Learn more about Countdown Turns →](./countdown-turns)
+
 ### Surrender Task
 Enables AI agents to fail gracefully when tasks become impossible or impractical, preventing resource waste and providing clear feedback to users and systems.
 

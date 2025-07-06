@@ -137,7 +137,7 @@ Your needs will evolve - build patterns that can adapt and be configured.
 ## Next Steps
 
 1. **Choose Your First Pattern**: Start with [Tool Budget Pattern](./patterns/tool-budget.md) if you're concerned about costs or [Embedded Explaining Pattern](./patterns/embedded-explaining.md) if you need better observability
-2. **Explore Examples**: Check out [working examples](./examples/tool-budget-openai-ts.md) in your preferred library
+2. **Explore Examples**: Check out [working examples](./patterns/tool-budget.md) in your preferred library
 3. **Join the Community**: Share your experiences and learn from others
 
 ## Need Help?

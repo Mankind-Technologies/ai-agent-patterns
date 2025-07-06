@@ -119,6 +119,20 @@ Ensure failure messages are helpful and non-technical:
 - Provide actionable next steps
 - Suggest alternative approaches when possible
 
+## Example Implementation
+
+A complete implementation of this pattern is available in the repository:
+
+📁 **[View on GitHub](https://github.com/Mankind-Technologies/ai-agent-patterns/tree/main/src/patterns/surrenderTask/openai-agent-sdk-ts)**
+
+This implementation demonstrates the core concepts of the Surrender Task Pattern using the OpenAI Agent SDK for TypeScript. It includes:
+
+- Complete source code with TypeScript types
+- Multiple surrender scenarios and examples
+- Integration with OpenAI Agent SDK
+- Example surrender conditions and user feedback
+- Test cases demonstrating graceful failure
+
 ## Key Takeaways
 
 - **Surrender is intelligent resource management**, not failure avoidance
